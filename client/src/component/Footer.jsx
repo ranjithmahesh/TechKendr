@@ -9,21 +9,25 @@ import axios from "axios";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        setLoading(false);
         return alert("Please enter a valid email");
       }
 
-      const response = await axios.post(BASE_URL, { email });
-      console.log(response.data);
+      await axios.post(BASE_URL, { email });
+      setLoading(false);
       alert("Email saved successfully");
 
       setEmail("");
     } catch (error) {
       console.error("Error saving email:", error);
       alert("Failed to save email. Please try again later.");
+      setLoading(false);
     }
   };
 
@@ -92,7 +96,7 @@ const Footer = () => {
               className=" mt-4 sm:mx-auto w-[299px] h-[30px] sm:pl-[5px]  bg-blue-500 rounded-md "
               onClick={handleSubmit}
             >
-              Subscribe
+              {loading ? "Loading..." : "Subscribe"}
             </button>
           </div>
         </div>

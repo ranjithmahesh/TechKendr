@@ -4,7 +4,8 @@ export const savePost = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await Email.findOne({ email });
+    const user = await Email.findOne({ email }).maxTimeMS(30000);
+
     if (user) {
       return res.status(409).json({ message: "User already exists" });
     }
